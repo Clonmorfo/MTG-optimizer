@@ -14,10 +14,3 @@ function authMiddleware(req, res, next) {
 }
 
 module.exports = authMiddleware;
-/*
-asi se usa 
-const authMiddleware = require('./middleware/auth');
-
-app.get('/dashboard', authMiddleware, (req, res) => {
-  res.send(`Bienvenido usuario ${req.userId}`);
-});*/

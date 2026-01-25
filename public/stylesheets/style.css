@@ -1,8 +1,16 @@
+:root {
+  --white: #F8F7F1;   /* Blanco hueso */
+  --blue:  #3E7CB1;   /* Azul Magic */
+  --black: #1B1B1B;   /* Negro profundo */
+  --red:   #C1440E;   /* Rojo mana */
+  --green: #2E8B57;   /* Verde mana */
+}
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: var(--blue);
 }

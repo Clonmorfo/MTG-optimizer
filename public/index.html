@@ -9,11 +9,19 @@
   
   <!-- Estilos del body, h1, p y footer (dejamos inline o podés mover a otra hoja si querés) -->
   <style>
+    :root {
+      --white: #F8F7F1;   /* Blanco hueso */
+      --blue:  #3E7CB1;   /* Azul Magic */
+      --black: #1B1B1B;   /* Negro profundo */
+      --red:   #C1440E;   /* Rojo mana */
+      --green: #2E8B57;   /* Verde mana */
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #1B1B1B; /* var(--black) */
-      color: #F8F7F1;      /* var(--white) */
+      background: var(--black);
+      color: var(--white);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -25,21 +33,21 @@
     h1 {
       font-size: 3rem;
       margin-bottom: 1rem;
-      color: #3E7CB1; /* var(--blue) */
+      color: var(--blue);
     }
 
     p {
       font-size: 1.2rem;
       max-width: 600px;
       margin-bottom: 2rem;
-      color: #F8F7F1; /* var(--white) */
+      color: var(--white);
     }
 
     footer {
       position: absolute;
       bottom: 10px;
       font-size: 0.8rem;
-      color: #F8F7F1; /* var(--white) */
+      color: var(--white);
     }
   </style>
 </head>
