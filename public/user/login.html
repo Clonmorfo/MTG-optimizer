@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrarse - MTG Optimizer</title>
+  
+  <!-- Enlazamos la hoja de estilo de botones -->
+  <link rel="stylesheet" href="/stylesheets/buttons.css">
+
+  <!-- Enlazamos Font Awesome para los iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Estilos internos para body, form, inputs y títulos -->
+  <style>
+    body {
+      background: #0D0D0D;
+      color: #EAEAEA;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    form {
+      background: #1C2833;
+      padding: 2rem;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 300px;
+    }
+
+    input {
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #5DADE2;
+    }
+
+    .group {
+      position: relative;
+      width: 100%;
+    }
+
+    .group input {
+      width: 100%;
+      box-sizing: border-box;   
+      padding-right: 2.5rem;   
+    }
+
+    .error-message {
+      color: var(--red);
+      text-align: center;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .toggle-eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1rem;
+      color: #444;;
+    }
+
+    .toggle-eye:hover {
+      color: var(--red);
+    }
+
+    input.error {
+      border: 2px solid var(--red);
+    }
+
+    #spinner {
+      margin-left: 8px;
+    }
+
+  </style>
+</head>
+<body>
+  <form id="loginForm" autocomplete="off" novalidate>
+  <input type="email" id="email" placeholder="Email" required>
+  <div class="group">
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <span class="toggle-eye" onclick="togglePassword('password')">
+      <i class="fa-solid fa-eye"></i>
+    </span>
+  </div>
+  <label>
+    <input type="checkbox" id="remember"> Recuerdame
+  </label>
+  <button type="submit" class="btn" id="loginBtn">
+    <span id="btnText">Ingresar</span>
+    <i id="spinner" class="fa-solid fa-circle-notch fa-spin" style="display: none;"></i>
+  </button>
+  <div id="formMessage" class="form-message"></div>
+</form>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const spinner = document.getElementById('spinner');
+    const btnText = document.getElementById('btnText');
+    const formMessage = document.getElementById('formMessage');
+
+    function togglePassword(id) {
+      let input = document.getElementById(id);
+      let icon = input.nextElementSibling.querySelector('i');
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      spinner.style.display = 'inline-block';
+      btnText.textContent = 'Iniciando sesión...';
+      formMessage.style.display = 'none';
+
+      let data = {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        rememberMe: document.getElementById('remember').checked,
+      };
+
+      try {
+        let res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+          credentials: 'include' 
+        });
+
+        let result = await res.json();
+
+        spinner.style.display = 'none';
+        btnText.textContent = 'Iniciar sesión';
+
+        if (result.success) {
+          console.log('Login exitoso, redirigiendo...');
+          window.location.href = '/dashboard.html';
+        } else {
+          formMessage.textContent = result.error;;
+          formMessage.classList.add('error-message');
+          formMessage.style.display = 'inline-block';
+        }
+      } catch (err) {
+          spinner.style.display = 'none';
+          btnText.textContent = 'Ingresar';   
+          formMessage.textContent = 'No se pudo conectar con el servidor';
+          formMessage.classList.add('error-message');
+          formMessage.style.display = 'inline-block';
+      }
+    });
+    
+  </script>
+</body>
+</html>
