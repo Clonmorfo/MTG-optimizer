@@ -57,8 +57,8 @@ async function loginUser(credentials) {
     );
   }
 
-  // Verificar si la cuenta está temporalmente bloqueada
-  if (user.status === 3) {
+  // Verificar si la cuenta está temporalmente bloqueada (status 2)
+  if (user.status === 2) {
     const user_full = await userRepository.findByEmail(email);
     if (user_full.lock_until && new Date(user_full.lock_until) > new Date()) {
       throw new AppError(
@@ -73,8 +73,8 @@ async function loginUser(credentials) {
     }
   }
 
-  // Verificar si la cuenta está permanentemente cerrada
-  if (user.status === 4) {
+  // Verificar si la cuenta está permanentemente cerrada (status 3)
+  if (user.status === 3) {
     throw new AppError(
       'Esta cuenta ha sido cerrada permanentemente',
       403,
@@ -82,8 +82,8 @@ async function loginUser(credentials) {
     );
   }
 
-  // Verificar si la cuenta está desactivada
-  if (user.status !== 0 && user.status !== 3) {
+  // Verificar si la cuenta está activa (solo 0 y 1 son válidas)
+  if (user.status !== 0 && user.status !== 1 && user.status !== 2) {
     throw new AppError(
       'Esta cuenta ha sido desactivada',
       403,
@@ -97,13 +97,28 @@ async function loginUser(credentials) {
     // Incrementar intentos fallidos
     const updated = await userRepository.incrementFailedLogin(user.id);
 
-    // Si llega a 5 intentos, bloquear por 15 minutos
-    if (updated.failed_login >= 5) {
-      await userRepository.lockAccount(user.id, 15, 3); // status 3 = temp ban, 15 minutos
+    // Lógica de bloqueo progresivo con duplicación de tiempo
+    if (updated.failed_login >= 5 && updated.failed_login < 10) {
+      // Calcular minutos de bloqueo: 15, 30, 60, 120 (dobla cada vez)
+      // Para el quinto intento: 15 * 2^(5-5) = 15 * 2^0 = 15
+      // Para el sexto intento: 15 * 2^(6-5) = 15 * 2^1 = 30
+      // Para el séptimo intento: 15 * 2^(7-5) = 15 * 2^2 = 60
+      // Para el octavo intento: 15 * 2^(8-5) = 15 * 2^3 = 120
+      const lockMinutes = 15 * Math.pow(2, updated.failed_login - 5);
+
+      await userRepository.lockAccount(user.id, lockMinutes, 2); // status 2 = temp ban
       throw new AppError(
-        'Demasiados intentos fallidos. Cuenta bloqueada por 15 minutos',
+        `Demasiados intentos fallidos. Cuenta bloqueada por ${lockMinutes} minutos`,
         403,
         'ACCOUNT_LOCKED'
+      );
+    } else if (updated.failed_login >= 10) {
+      // Cierre permanente
+      await userRepository.lockAccount(user.id, 0, 3); // status 3 = permanent ban
+      throw new AppError(
+        'Cuenta cerrada permanentemente por exceso de intentos fallidos',
+        403,
+        'ACCOUNT_CLOSED'
       );
     }
 
