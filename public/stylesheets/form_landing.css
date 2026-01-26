@@ -1,0 +1,283 @@
+:root {
+ --white: #F8F7F1;
+  --blue: #3E7CB1;
+  --black: #1B1B1B;
+  --red: #C1440E;
+  --green: #2E8B57;
+  --blue-dark: #2C6A9A;
+  --blue-light: #5BA3D0;
+  --blue-ultra-light: #8BC5E0;
+  --red-dark: #8B2E0B;
+  --red-light: #E8562D;
+  --red-ultra-light: #F08866;
+  --green-dark: #1A5C3A;
+  --green-light: #4FB578;
+  --green-ultra-light: #6FCC92;
+  --gold: #FFD700;
+  --gold-dark: #DAA520;
+  --gold-light: #FFE550;
+  --purple: #7B3FF2;
+  --purple-dark: #5A2FB0;
+  --purple-light: #9B5FFF;
+  --cyan: #00D4FF;
+  --cyan-dark: #00A0CC;
+  --cyan-light: #33E8FF;
+  --orange: #FF8C00;
+  --orange-dark: #CC6F00;
+  --orange-light: #FFB347;
+  --pink: #FF1493;
+  --pink-light: #FF69B4;
+  --teal: #20B2AA;
+  --teal-light: #48D1CC;
+  --gray-50: #F5F5F5;
+  --gray-100: #EEEEEE;
+  --gray-300: #CCCCCC;
+  --gray-500: #999999;
+  --gray-700: #666666;
+  --gray-900: #333333;
+  --card-bg: #2A2A2A;
+  --card-bg-light: #353535;
+  --surface-bg: #1F1F1F;
+  --hover-bg: #333333;
+  --overlay-bg: rgba(27, 27, 27, 0.95);
+  --gradient-blue: linear-gradient(135deg, #3E7CB1 0%, #2C6A9A 100%);
+  --gradient-red: linear-gradient(135deg, #C1440E 0%, #8B2E0B 100%);
+  --gradient-green: linear-gradient(135deg, #2E8B57 0%, #1A5C3A 100%);
+  --gradient-gold: linear-gradient(135deg, #FFD700 0%, #DAA520 100%);
+  --gradient-magic: linear-gradient(135deg, #7B3FF2 0%, #3E7CB1 50%, #C1440E 100%);
+  --gradient-fire: linear-gradient(135deg, #FF8C00 0%, #E8562D 100%);
+  --gradient-ice: linear-gradient(135deg, #00D4FF 0%, #5BA3D0 100%);
+  --gradient-nature: linear-gradient(135deg, #2E8B57 0%, #4FB578 100%);
+  --gradient-twilight: linear-gradient(135deg, #7B3FF2 0%, #FF1493 100%);
+  --mystic-font: 'Cinzel', serif;
+  --body-font: 'Crimson Text', serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(circle at top, #1B1B1B 0%, #0D0D0D 65%);
+  color: var(--white);
+  font-family: var(--body-font);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 430px;
+  width: 100%;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 2.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 40px rgba(0,0,0,0.7);
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-logo img {
+  width: 90px;
+  filter: drop-shadow(0 8px 20px rgba(0, 212, 255, 0.25));
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  font-family: var(--title-font);
+  font-size: 2rem;
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header p {
+  background: linear-gradient(90deg, var(--gold), #FFB347);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 0.95rem;
+}
+
+/* Inputs */
+.form-group {
+  margin-bottom: 1.3rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  opacity: 0.85;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(123, 63, 242, 0.4);
+  background: rgba(30, 30, 30, 0.9);
+  color: var(--white);
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.25);
+}
+
+/* Password icon */
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input {
+  padding-right: 48px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #AAA;
+  transition: color 0.2s;
+}
+
+.toggle-password:hover {
+  color: var(--cyan);
+}
+
+/* Checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+width: auto;
+cursor: pointer;
+}
+.checkbox-group label {
+margin: 0;
+cursor: pointer;
+font-weight: normal;
+}
+
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background: var(--gradient-blue);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(62, 124, 177, 0.4);
+  font-family: var(--mystic-font);
+  letter-spacing: 0.5px;
+}
+
+.btn-submit:hover {
+  background: var(--gradient-magic);
+  box-shadow: 0 6px 20px rgba(123, 63, 242, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-submit:disabled {
+  background: linear-gradient(135deg, #5A7A8F 0%, #455A6A 100%);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+
+/* Messages */
+.error-msg {
+  background: var(--error-bg);
+  border: 1px solid var(--red);
+  color: #FF9A7A;
+  padding: 0.8rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.success-msg {
+  background: var(--success-bg);
+  border: 1px solid var(--green);
+  color: #7CFFB2;
+  padding: 0.8rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: var(--cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Footer link */
+.footer-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.footer-link a {
+  background: linear-gradient(90deg, var(--cyan), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-link a:hover {
+  background: linear-gradient(90deg, var(--gold), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
