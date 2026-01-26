@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - MTG Optimizer</title>
+  <link rel="icon" type="image/png" href="/images/logo.png">
+  <link rel="stylesheet" href="/stylesheets/buttons.css">
+  <link rel="stylesheet" href="/stylesheets/orbs.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    /* Reusar la paleta y estilos del home */
+    :root {
+      /* COLORES PRIMARIOS - Mana de Magic */
+      --white: #F8F7F1;
+      --blue: #3E7CB1;
+      --black: #1B1B1B;
+      --red: #C1440E;
+      --green: #2E8B57;
+
+      /* COLORES SECUNDARIOS - Variaciones */
+      --blue-dark: #2C6A9A;
+      --blue-light: #5BA3D0;
+      --blue-ultra-light: #8BC5E0;
+      --red-dark: #8B2E0B;
+      --red-light: #E8562D;
+      --red-ultra-light: #F08866;
+      --green-dark: #1A5C3A;
+      --green-light: #4FB578;
+      --green-ultra-light: #6FCC92;
+
+      /* COLORES ADICIONALES - Acentos y efectos */
+      --gold: #FFD700;
+      --purple: #7B3FF2;
+      --cyan: #00D4FF;
+      --teal: #20B2AA;
+
+      /* NEUTROS */
+      --gray-300: #CCCCCC;
+      --gray-500: #999999;
+      --gray-700: #666666;
+
+      /* FONDOS OSCUROS */
+      --card-bg: #2A2A2A;
+      --card-bg-light: #353535;
+      --surface-bg: #1F1F1F;
+      --hover-bg: #333333;
+
+      --gradient-magic: linear-gradient(135deg, #7B3FF2 0%, #3E7CB1 50%, #C1440E 100%);
+
+      --mystic-font: 'Cinzel', serif;
+      --body-font: 'Crimson Text', serif;
+    }
+
+    * { box-sizing: border-box; margin:0; padding:0; }
+
+    body { font-family: var(--body-font); background: var(--surface-bg); color: var(--white); }
+
+    header {
+      padding: 1.25rem 2rem;
+      border-bottom: 2px solid var(--blue);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(180deg, rgba(0,0,0,0.05), transparent);
+    }
+
+    .logo { font-family:var(--mystic-font); color:var(--blue); font-size:1.6rem; font-weight:700; letter-spacing:2px; }
+
+    .container { max-width:1100px; margin: 20px auto; padding: 0 20px; }
+    .grid { display:grid; grid-template-columns: 1fr 320px; gap:20px; }
+
+    .card { background: var(--card-bg); border-radius:8px; padding:20px; box-shadow: 0 8px 24px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.02); }
+
+    .user-info { display:flex; gap:16px; align-items:center; }
+    .avatar { width:64px; height:64px; border-radius:8px; background: linear-gradient(135deg, rgba(62,124,177,0.12), rgba(123,63,242,0.08)); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--white); font-family:var(--mystic-font); }
+    .username { font-size:1.25rem; font-weight:700; color:var(--white); }
+    .email { color: var(--gray-300); }
+
+    .role-badge { padding:6px 10px; border-radius:999px; font-weight:700; color:#111; font-size:0.9rem; }
+    .role-user { background: linear-gradient(90deg, var(--blue-light), var(--blue)); color:#001; }
+    .role-operator { background: linear-gradient(90deg, var(--cyan), var(--blue)); color:#001; }
+    .role-admin { background: linear-gradient(90deg, var(--gold), var(--orange)); color:#111; }
+    .role-owner { background: linear-gradient(90deg, var(--red), var(--red-dark)); color:#fff; }
+
+    .section-title { font-family:var(--mystic-font); font-size:1.05rem; color:var(--cyan); margin-bottom:12px; }
+
+    .cards-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; }
+    .small-card { background: var(--card-bg-light); padding:12px; border-radius:8px; color:var(--gray-300); }
+
+    .logout { background: transparent; border: 2px solid var(--blue); color: var(--blue); padding:8px 12px; border-radius:8px; cursor:pointer; }
+
+    @media (max-width:900px){ .grid{ grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body data-orb-palette="dashboard">
+  <header>
+    <div class="logo">MTG Optimizer</div>
+    <div>
+      <button id="btnLogout" class="logout">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="user-info">
+            <div class="avatar" id="avatar">U</div>
+            <div>
+              <div class="username" id="username">Usuario</div>
+              <div id="email" class="email"></div>
+            </div>
+            <div style="margin-left:auto">
+              <span id="roleBadge" class="role-badge role-user">USER</span>
+            </div>
+          </div>
+          <hr style="margin:18px 0;border:none;border-top:1px solid rgba(255,255,255,0.04);">
+          <div>
+            <div class="section-title">Resumen</div>
+            <p id="welcome">Cargando datos del usuario...</p>
+          </div>
+        </div>
+
+        <div style="height:20px"></div>
+
+        <div class="card">
+          <div class="section-title">Acciones rápidas</div>
+          <div class="cards-grid">
+            <div class="small-card">Mis mazos</div>
+            <div class="small-card">Analizar mazo</div>
+            <div class="small-card">Recomendaciones</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="section-title">Información</div>
+          <p>Rol numérico: <strong id="roleNum">-</strong></p>
+          <p>Rol texto: <strong id="roleText">-</strong></p>
+          <p style="color:var(--muted);font-size:0.95rem;margin-top:12px">Los roles son: 0 = user, 1 = operator, 2 = admin, 3 = owner</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/javascripts/dashboard.js"></script>
+  <script src="/javascripts/orbs.js" defer></script>
+</body>
+</html>

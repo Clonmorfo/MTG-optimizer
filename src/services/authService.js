@@ -92,7 +92,7 @@ async function loginUser(credentials) {
   }
 
   // Verificar la contraseña
-  const isPasswordValid = await passwordUtils.verifyPassword(password, user.password);
+  const isPasswordValid = await passwordUtils.verifyPassword(user.password, password);
   if (!isPasswordValid) {
     // Incrementar intentos fallidos
     const updated = await userRepository.incrementFailedLogin(user.id);

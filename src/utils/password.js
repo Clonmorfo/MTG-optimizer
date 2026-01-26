@@ -10,6 +10,7 @@ async function hashPassword(password) {
 }
 
 async function verifyPassword(hash, password) {
+
   return await argon2.verify(hash, password);
 }
 

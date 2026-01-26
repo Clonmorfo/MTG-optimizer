@@ -49,6 +49,10 @@
         const data = await response.json();
 
         if (response.ok) {
+          // Guardar access token para peticiones al dashboard
+            if (data.accessToken) {
+              localStorage.setItem('accessToken', data.accessToken);
+            }
           successMsg.textContent = 'Sesión iniciada. Redirigiendo...';
           successMsg.style.display = 'block';
           setTimeout(() => {

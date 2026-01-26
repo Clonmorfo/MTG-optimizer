@@ -9,6 +9,15 @@ function generateAccessToken(userId) {
   );
 }
 
+// Genera un token genérico con tiempo de expiración configurable
+function generateToken(userId, expiresIn = '15m') {
+  return jwt.sign(
+    { userId },
+    process.env.JWT_SECRET,
+    { expiresIn }
+  );
+}
+
 // Verifica JWT (para middleware)
 function verifyAccessToken(token) {
   try {
@@ -18,4 +27,4 @@ function verifyAccessToken(token) {
   }
 }
 
-module.exports = { generateAccessToken, verifyAccessToken };
+module.exports = { generateAccessToken, generateToken, verifyAccessToken };

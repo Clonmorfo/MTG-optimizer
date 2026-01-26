@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const authController = require('../controllers/authController');
+const authMiddleware = require('../middleware/auth');
 
 /**
  * GET /check-username
@@ -25,5 +26,11 @@ router.post('/register', authController.register);
  * Inicia sesión de un usuario
  */
 router.post('/login', authController.login);
+
+/**
+ * GET /me
+ * Devuelve datos del usuario autenticado
+ */
+router.get('/me', authMiddleware, authController.me);
 
 module.exports = router;

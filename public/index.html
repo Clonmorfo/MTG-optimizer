@@ -6,6 +6,7 @@
   <title>MTG Optimizer - Optimiza tus mazos de Magic</title>
   <link rel="icon" type="image/png" href="/images/logo.png">
   <link rel="stylesheet" href="/stylesheets/buttons.css">
+  <link rel="stylesheet" href="/stylesheets/orbs.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
   
@@ -524,6 +525,9 @@
   </style>
 </head>
 <body>
+  
+  <!-- Indica a orbs.js qué paleta usar -->
+  <script>document.body.setAttribute('data-orb-palette','home');</script>
   <!-- HEADER -->
   <header>
     <div class="logo-section">
@@ -532,6 +536,7 @@
     </div>
     <ul class="header-links">
       <li><a href="#features">Características</a></li>
+      <li><a href="/user/register.html">Registrate</a></li>
       <li><a href="/user/login.html">Ingresar</a></li>
     </ul>
   </header>
@@ -608,4 +613,5 @@
     <p>Magic: The Gathering es propiedad de Wizards of the Coast.</p>
   </footer>
 </body>
+<script src="/javascripts/orbs.js" defer></script>
 </html>

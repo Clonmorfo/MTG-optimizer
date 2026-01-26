@@ -48,12 +48,21 @@ async function findByEmailWithPassword(email) {
   return result.rowCount > 0 ? result.rows[0] : null;
 }
 
+async function getAuthById(userId) {
+  const pool = getAuthPool();
+  const result = await pool.query(
+    'SELECT id, username, email, type FROM ua_user WHERE id = $1 LIMIT 1',
+    [userId]
+  );
+  return result.rowCount > 0 ? result.rows[0] : null;
+}
+
 async function create(username, email, passwordHash, two_factor) {
   const pool = getAuthPool();
   const result = await pool.query(
     `INSERT INTO ua_user 
      (username, password, email, two_factor, created_at, failed_login, status, type)
-     VALUES ($1, $2, $3, $4, NOW(), 0, 0, 'user')
+     VALUES ($1, $2, $3, $4, NOW(), 0, 0, 0)
      RETURNING id, username, email, created_at`,
     [username, passwordHash, email, two_factor]
   );
@@ -147,5 +156,6 @@ module.exports = {
   resetFailedLogin,
   // Users
   getProfileById,
-  updateProfile
+  updateProfile,
+  getAuthById
 };

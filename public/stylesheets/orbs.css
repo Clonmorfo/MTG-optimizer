@@ -1,0 +1,51 @@
+/* Orbs background - shared stylesheet
+   Uses CSS variables that are set by /javascripts/orbs.js
+*/
+:root{
+  --orb1-top: -200px;
+  --orb1-left: -200px;
+  --orb1-size: 700px;
+  --orb1-color: rgba(0,212,255,0.35);
+
+  --orb2-bottom: -200px;
+  --orb2-right: -200px;
+  --orb2-size: 700px;
+  --orb2-color: rgba(123,63,242,0.35);
+}
+
+body::before,
+body::after{
+  content: "";
+  position: absolute;
+  width: var(--orb1-size);
+  height: var(--orb1-size);
+  border-radius: 50%;
+  filter: blur(36px);
+  opacity: 0.55;
+  z-index: 0;
+  pointer-events: none;
+  animation: orbFloat 12s ease-in-out infinite;
+}
+
+body::before{
+  top: var(--orb1-top);
+  left: var(--orb1-left);
+  width: var(--orb1-size);
+  height: var(--orb1-size);
+  background: radial-gradient(circle, var(--orb1-color) 0%, transparent 70%);
+}
+
+body::after{
+  bottom: var(--orb2-bottom);
+  right: var(--orb2-right);
+  width: var(--orb2-size);
+  height: var(--orb2-size);
+  background: radial-gradient(circle, var(--orb2-color) 0%, transparent 70%);
+  animation-delay: 6s;
+}
+
+@keyframes orbFloat{
+  0% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(80px, 60px) scale(1.2); }
+  100% { transform: translate(0,0) scale(1); }
+}

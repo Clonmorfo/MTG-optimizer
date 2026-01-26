@@ -4,6 +4,7 @@
  */
 
 const authService = require('../services/authService');
+const usersRepository = require('../repositories/usersRepository');
 const { sanitizeUsername, sanitizeEmail } = require('../utils/sanitize');
 const AppError = require('../errors/AppError');
 
@@ -23,6 +24,38 @@ async function checkUsername(req, res) {
     res.json(result);
   } catch (error) {
     console.error('Error verificando username:', error);
+    res.status(500).json({ error: 'Error interno' });
+  }
+}
+
+/**
+ * GET /me
+ * Devuelve información mínima del usuario autenticado
+ */
+async function me(req, res) {
+  const userId = req.userId;
+  if (!userId) return res.status(401).json({ error: 'No autorizado' });
+
+  try {
+    const user = await usersRepository.getAuthById(userId);
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+
+    // Mapear tipo (texto) a número según convención: user=0, operator=1, admin=2, owner=3
+    const type = (user.type || 'user').toLowerCase();
+    let role = 0;
+    if (type === 'operator') role = 1;
+    if (type === 'admin') role = 2;
+    if (type === 'owner') role = 3;
+
+    res.json({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role,
+      roleName: type
+    });
+  } catch (err) {
+    console.error('[ME ERROR]', err);
     res.status(500).json({ error: 'Error interno' });
   }
 }
@@ -189,5 +222,6 @@ module.exports = {
   checkUsername,
   checkEmail,
   register,
-  login
+  login,
+  me
 };
