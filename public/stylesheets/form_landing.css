@@ -67,6 +67,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .auth-wrapper {
@@ -89,6 +91,8 @@ body {
   border: 1px solid var(--border-color);
   box-shadow: 0 0 40px rgba(0,0,0,0.7);
   animation: fadeIn 0.6s ease;
+  position: relative;
+  z-index: 2;
 }
 
 @keyframes fadeIn {
@@ -112,12 +116,14 @@ body {
   font-family: var(--title-font);
   font-size: 2rem;
   background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .header p {
   background: linear-gradient(90deg, var(--gold), #FFB347);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 0.95rem;
@@ -270,6 +276,7 @@ font-weight: normal;
 
 .footer-link a {
   background: linear-gradient(90deg, var(--cyan), var(--blue));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-decoration: none;
@@ -278,6 +285,39 @@ font-weight: normal;
 
 .footer-link a:hover {
   background: linear-gradient(90deg, var(--gold), var(--purple));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  filter: blur(35px);
+  opacity: 0.55;
+  animation: float 12s ease-in-out infinite;
+  z-index: 0;
+}
+
+body::before {
+  top: -250px;
+  left: -200px;
+  background: radial-gradient(circle, rgba(0,212,255,0.35) 0%, transparent 70%);
+}
+
+body::after {
+  bottom: -250px;
+  right: -200px;
+  background: radial-gradient(circle, rgba(123,63,242,0.35) 0%, transparent 70%);
+  animation-delay: 6s;
+}
+
+@keyframes float {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(80px, 60px) scale(1.2); }
+  100% { transform: translate(0, 0) scale(1); }
 }
