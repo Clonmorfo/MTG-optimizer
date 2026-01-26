@@ -1,9 +1,46 @@
 :root {
-  --white: #F8F7F1;   /* Blanco hueso */
-  --blue:  #3E7CB1;   /* Azul Magic */
-  --black: #1B1B1B;   /* Negro profundo */
-  --red:   #C1440E;   /* Rojo mana */
-  --green: #2E8B57;   /* Verde mana */
+  /* COLORES PRIMARIOS - Mana de Magic */
+  --white: #F8F7F1;       /* Blanco hueso - Mana blanco */
+  --blue:  #3E7CB1;       /* Azul Magic - Mana azul */
+  --black: #1B1B1B;       /* Negro profundo - Mana negro */
+  --red:   #C1440E;       /* Rojo mana - Mana rojo */
+  --green: #2E8B57;       /* Verde mana - Mana verde */
+  
+  /* COLORES SECUNDARIOS - Variaciones y acentos */
+  --blue-dark: #2C6A9A;   /* Azul oscuro */
+  --blue-light: #5BA3D0;  /* Azul claro */
+  --red-dark: #8B2E0B;    /* Rojo oscuro */
+  --red-light: #E8562D;   /* Rojo claro */
+  --green-dark: #1A5C3A;  /* Verde oscuro */
+  --green-light: #4FB578;  /* Verde claro */
+  
+  /* COLORES NEUTRALES */
+  --gray-50: #F5F5F5;     /* Gris muy claro */
+  --gray-100: #EEEEEE;    /* Gris claro */
+  --gray-300: #CCCCCC;    /* Gris medio-claro */
+  --gray-500: #999999;    /* Gris medio */
+  --gray-700: #666666;    /* Gris medio-oscuro */
+  --gray-900: #333333;    /* Gris oscuro */
+  
+  /* COLORES ADICIONALES - Acentos y efectos */
+  --gold: #FFD700;        /* Oro - Para destacados */
+  --gold-dark: #DAA520;   /* Oro oscuro */
+  --purple: #7B3FF2;      /* Púrpura mágico */
+  --purple-dark: #5A2FB0; /* Púrpura oscuro */
+  --cyan: #00D4FF;        /* Cian - Contraste */
+  --orange: #FF8C00;      /* Naranja - Energía */
+  
+  /* COLORES DE FONDO Y SUPERFICIES */
+  --card-bg: #2A2A2A;     /* Fondo de tarjeta */
+  --surface-bg: #1F1F1F;  /* Fondo de superficie */
+  --hover-bg: #333333;    /* Fondo hover */
+  
+  /* GRADIENTES PREDEFINIDOS */
+  --gradient-blue: linear-gradient(135deg, #3E7CB1 0%, #2C6A9A 100%);
+  --gradient-red: linear-gradient(135deg, #C1440E 0%, #8B2E0B 100%);
+  --gradient-green: linear-gradient(135deg, #2E8B57 0%, #1A5C3A 100%);
+  --gradient-gold: linear-gradient(135deg, #FFD700 0%, #DAA520 100%);
+  --gradient-magic: linear-gradient(135deg, #7B3FF2 0%, #3E7CB1 50%, #C1440E 100%);
 }
 
 body {
@@ -14,3 +51,4 @@ body {
 a {
   color: var(--blue);
 }
+

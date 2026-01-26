@@ -3,66 +3,609 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MTG Optimizer</title>
-  <!-- Enlazamos la nueva hoja de estilos solo para los botones -->
+  <title>MTG Optimizer - Optimiza tus mazos de Magic</title>
+  <link rel="icon" type="image/png" href="/images/logo.png">
   <link rel="stylesheet" href="/stylesheets/buttons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
   
-  <!-- Estilos del body, h1, p y footer (dejamos inline o podés mover a otra hoja si querés) -->
   <style>
     :root {
-      --white: #F8F7F1;   /* Blanco hueso */
-      --blue:  #3E7CB1;   /* Azul Magic */
-      --black: #1B1B1B;   /* Negro profundo */
-      --red:   #C1440E;   /* Rojo mana */
-      --green: #2E8B57;   /* Verde mana */
+      /* COLORES PRIMARIOS - Mana de Magic */
+      --white: #F8F7F1;
+      --blue: #3E7CB1;
+      --black: #1B1B1B;
+      --red: #C1440E;
+      --green: #2E8B57;
+      
+      /* COLORES SECUNDARIOS - Variaciones */
+      --blue-dark: #2C6A9A;
+      --blue-light: #5BA3D0;
+      --blue-ultra-light: #8BC5E0;
+      --red-dark: #8B2E0B;
+      --red-light: #E8562D;
+      --red-ultra-light: #F08866;
+      --green-dark: #1A5C3A;
+      --green-light: #4FB578;
+      --green-ultra-light: #6FCC92;
+      
+      /* COLORES ADICIONALES - Acentos y efectos */
+      --gold: #FFD700;
+      --gold-dark: #DAA520;
+      --gold-light: #FFE550;
+      --purple: #7B3FF2;
+      --purple-dark: #5A2FB0;
+      --purple-light: #9B5FFF;
+      --cyan: #00D4FF;
+      --cyan-dark: #00A0CC;
+      --cyan-light: #33E8FF;
+      --orange: #FF8C00;
+      --orange-dark: #CC6F00;
+      --orange-light: #FFB347;
+      --pink: #FF1493;
+      --pink-light: #FF69B4;
+      --teal: #20B2AA;
+      --teal-light: #48D1CC;
+      
+      /* COLORES NEUTRALES */
+      --gray-50: #F5F5F5;
+      --gray-100: #EEEEEE;
+      --gray-300: #CCCCCC;
+      --gray-500: #999999;
+      --gray-700: #666666;
+      --gray-900: #333333;
+      
+      /* COLORES DE FONDO Y SUPERFICIES */
+      --card-bg: #2A2A2A;
+      --card-bg-light: #353535;
+      --surface-bg: #1F1F1F;
+      --hover-bg: #333333;
+      --overlay-bg: rgba(27, 27, 27, 0.95);
+      
+      /* GRADIENTES PREDEFINIDOS */
+      --gradient-blue: linear-gradient(135deg, #3E7CB1 0%, #2C6A9A 100%);
+      --gradient-red: linear-gradient(135deg, #C1440E 0%, #8B2E0B 100%);
+      --gradient-green: linear-gradient(135deg, #2E8B57 0%, #1A5C3A 100%);
+      --gradient-gold: linear-gradient(135deg, #FFD700 0%, #DAA520 100%);
+      --gradient-magic: linear-gradient(135deg, #7B3FF2 0%, #3E7CB1 50%, #C1440E 100%);
+      --gradient-fire: linear-gradient(135deg, #FF8C00 0%, #E8562D 100%);
+      --gradient-ice: linear-gradient(135deg, #00D4FF 0%, #5BA3D0 100%);
+      --gradient-nature: linear-gradient(135deg, #2E8B57 0%, #4FB578 100%);
+      --gradient-twilight: linear-gradient(135deg, #7B3FF2 0%, #FF1493 100%);
+      
+      /* Fuentes */
+      --mystic-font: 'Cinzel', serif;
+      --body-font: 'Crimson Text', serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: var(--body-font);
       background: var(--black);
       color: var(--white);
+    }
+
+    /* HEADER */
+    header {
+      padding: 1.5rem 2rem;
+      border-bottom: 2px solid var(--blue);
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      height: 100vh;
-      flex-direction: column;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.3));
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--blue);
+      font-family: var(--mystic-font);
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(62, 124, 177, 0.3);
+    }
+
+    .header-links {
+      display: flex;
+      gap: 1rem;
+      list-style: none;
+    }
+
+    .header-links a {
+      color: var(--white);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-size: 0.95rem;
+      font-family: var(--mystic-font);
+      letter-spacing: 1px;
+      position: relative;
+    }
+
+    .header-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+      transition: width 0.3s;
+    }
+
+    .header-links a:hover {
+      color: var(--cyan);
+    }
+
+    .header-links a:hover::after {
+      width: 100%;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 4rem 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--black) 0%, rgba(123, 63, 242, 0.08) 50%, rgba(62, 124, 177, 0.05) 100%);
+      max-width: 1000px;
+      margin: 0 auto;
+      border-bottom: 3px solid var(--gradient-magic);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(123, 63, 242, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 50%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+      font-family: var(--mystic-font);
+      letter-spacing: 3px;
+      text-shadow: 0 0 20px rgba(62, 124, 177, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--orange-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: var(--mystic-font);
+      font-weight: 600;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      color: var(--gray-300);
+      margin-bottom: 2rem;
+      line-height: 1.8;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .btn-main {
+      padding: 14px 35px;
+      background: var(--gradient-blue);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(62, 124, 177, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-main:hover {
+      background: var(--gradient-magic);
+      box-shadow: 0 6px 20px rgba(123, 63, 242, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      padding: 14px 35px;
+      background: transparent;
+      color: var(--cyan);
+      border: 2px solid var(--cyan);
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-secondary:hover {
+      background: var(--cyan);
+      color: var(--black);
+      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* FEATURES */
+    .features {
+      padding: 3rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .features-title {
+      font-size: 2.5rem;
+      text-align: center;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--orange) 50%, var(--red-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 2.5rem;
+      font-family: var(--mystic-font);
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .feature-item {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--blue);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), transparent);
+    }
+
+    .feature-item:nth-child(1) {
+      border-left-color: var(--blue);
+    }
+    .feature-item:nth-child(1)::before {
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+    }
+
+    .feature-item:nth-child(2) {
+      border-left-color: var(--purple);
+    }
+    .feature-item:nth-child(2)::before {
+      background: linear-gradient(90deg, var(--purple), var(--pink));
+    }
+
+    .feature-item:nth-child(3) {
+      border-left-color: var(--red);
+    }
+    .feature-item:nth-child(3)::before {
+      background: linear-gradient(90deg, var(--orange), var(--red));
+    }
+
+    .feature-item:nth-child(4) {
+      border-left-color: var(--green);
+    }
+    .feature-item:nth-child(4)::before {
+      background: linear-gradient(90deg, var(--green), var(--teal));
+    }
+
+    .feature-item:nth-child(5) {
+      border-left-color: var(--gold);
+    }
+    .feature-item:nth-child(5)::before {
+      background: linear-gradient(90deg, var(--gold), var(--orange-light));
+    }
+
+    .feature-item:nth-child(6) {
+      border-left-color: var(--cyan);
+    }
+    .feature-item:nth-child(6)::before {
+      background: linear-gradient(90deg, var(--cyan), var(--teal-light));
+    }
+
+    .feature-item:hover {
+      background: var(--card-bg-light);
+      border-left-width: 6px;
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .feature-item h3 {
+      color: var(--cyan);
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+      font-family: var(--mystic-font);
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .feature-item:nth-child(1) h3 { color: var(--blue-ultra-light); }
+    .feature-item:nth-child(2) h3 { color: var(--purple-light); }
+    .feature-item:nth-child(3) h3 { color: var(--orange-light); }
+    .feature-item:nth-child(4) h3 { color: var(--green-light); }
+    .feature-item:nth-child(5) h3 { color: var(--gold-light); }
+    .feature-item:nth-child(6) h3 { color: var(--cyan-light); }
+
+    .feature-item p {
+      color: var(--gray-300);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* STATS */
+    .stats-section {
+      background: linear-gradient(135deg, rgba(62, 124, 177, 0.1) 0%, rgba(123, 63, 242, 0.1) 100%);
+      padding: 2.5rem;
+      margin: 2rem 0;
+      border-radius: 8px;
+      border: 2px solid var(--purple);
+      border-top: 3px solid var(--gradient-magic);
+      box-shadow: inset 0 0 20px rgba(123, 63, 242, 0.05);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
       text-align: center;
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: var(--blue);
+    .stat-box {
+      padding: 1rem;
+      background: rgba(42, 42, 42, 0.5);
+      border-radius: 8px;
+      border: 1px solid rgba(123, 63, 242, 0.3);
+      transition: all 0.3s;
     }
 
-    p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin-bottom: 2rem;
-      color: var(--white);
+    .stat-box:nth-child(1) {
+      border-color: var(--cyan);
+    }
+    .stat-box:nth-child(2) {
+      border-color: var(--gold);
+    }
+    .stat-box:nth-child(3) {
+      border-color: var(--green);
     }
 
+    .stat-box:hover {
+      background: rgba(42, 42, 42, 0.8);
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px rgba(123, 63, 242, 0.2);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, var(--gold), var(--orange-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      font-family: var(--mystic-font);
+      letter-spacing: 1px;
+    }
+
+    .stat-box:nth-child(1) .stat-number {
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-box:nth-child(2) .stat-number {
+      background: linear-gradient(90deg, var(--gold), var(--orange-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-box:nth-child(3) .stat-number {
+      background: linear-gradient(90deg, var(--green), var(--teal-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      color: var(--gray-300);
+      font-size: 1rem;
+      font-family: var(--mystic-font);
+      letter-spacing: 1px;
+    }
+
+    /* FOOTER */
     footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 0.8rem;
-      color: var(--white);
+      background: linear-gradient(180deg, rgba(27, 27, 27, 0.8), var(--black));
+      border-top: 2px solid var(--gradient-magic);
+      padding: 2rem;
+      text-align: center;
+      color: var(--gray-500);
+      margin-top: 2rem;
+      font-family: var(--mystic-font);
+    }
+
+    footer p {
+      margin: 0.4rem 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      transition: color 0.3s;
+    }
+
+    footer p:hover {
+      color: var(--gold);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+
+      .btn-main, .btn-secondary {
+        width: 100%;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .header-links {
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>MTG Optimizer</h1>
-  <p>Optimiza tus mazos de Magic: The Gathering basado en tu colección personal. Empieza a crear y mejorar tus decks de manera rápida y sencilla.</p>
-  
-  <!-- Botones de registro y login -->
-  <div>
-    <a href="/user/register.html" class="btn">Registrarse</a>
-    <a href="/user/login.html" class="btn">Log in</a>
-  </div>
+  <!-- HEADER -->
+  <header>
+    <div class="logo-section">
+      <img src="/images/logo.png" alt="MTG Optimizer Logo" class="logo-icon">
+      <div class="logo">MTG Optimizer</div>
+    </div>
+    <ul class="header-links">
+      <li><a href="#features">Características</a></li>
+      <li><a href="/user/login.html">Ingresar</a></li>
+    </ul>
+  </header>
 
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Domina tus Mazos</h1>
+    <p class="hero-subtitle">Optimiza y analiza tus estrategias de Magic: The Gathering</p>
+    <p class="hero-description">Una herramienta poderosa diseñada para jugadores que quieren llevar su juego al siguiente nivel</p>
+    
+    <div class="cta-buttons">
+      <a href="/user/register.html" class="btn-main">Comenzar Ahora</a>
+      <a href="/user/login.html" class="btn-secondary">Ya tengo cuenta</a>
+    </div>
+  </section>
+
+  <!-- CARACTERÍSTICAS -->
+  <section class="features" id="features">
+    <h2 class="features-title">Lo que ofrecemos</h2>
+    <div class="features-grid">
+      <div class="feature-item">
+        <h3>Análisis Detallado</h3>
+        <p>Analiza la distribución de tu mazo, curva de costos y estrategia general</p>
+      </div>
+
+      <div class="feature-item">
+        <h3>Recomendaciones</h3>
+        <p>Recibe sugerencias personalizadas para mejorar tu composición</p>
+      </div>
+
+      <div class="feature-item">
+        <h3>Optimización</h3>
+        <p>Descubre las mejores cartas para tu estrategia</p>
+      </div>
+
+      <div class="feature-item">
+        <h3>Seguro</h3>
+        <p>Tus datos protegidos con seguridad de nivel profesional</p>
+      </div>
+
+      <div class="feature-item">
+        <h3>Accesible</h3>
+        <p>Funciona en desktop, tablet y móvil</p>
+      </div>
+
+      <div class="feature-item">
+        <h3>Rápido</h3>
+        <p>Resultados instantáneos y actualizaciones en tiempo real</p>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-number">5000+</div>
+          <div class="stat-label">Jugadores</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">50K+</div>
+          <div class="stat-label">Mazos</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">99.9%</div>
+          <div class="stat-label">Uptime</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
-    © 2026 MTG Optimizer
+    <p>&copy; 2026 MTG Optimizer. Todos los derechos reservados.</p>
+    <p>Magic: The Gathering es propiedad de Wizards of the Coast.</p>
   </footer>
 </body>
 </html>
