@@ -109,12 +109,22 @@ async function lockAccount(userId, lockMinutes, newStatus) {
   return result.rows[0];
 }
 
-async function resetFailedLogin(userId) {
+async function resetFailedLogin(userId, resetFailed = false) {
   const pool = getAuthPool();
-  const result = await pool.query(
-    'UPDATE ua_user SET failed_login = 0, lock_until = NULL WHERE id = $1 RETURNING id',
-    [userId]
-  );
+  let result;
+  if (resetFailed) {
+    result = await pool.query(
+      'UPDATE ua_user SET failed_login = 0, lock_until = NULL WHERE id = $1 RETURNING id',
+      [userId]
+    );
+    return result.rows[0];
+  }else{
+    result = await pool.query(
+      'UPDATE ua_user SET lock_until = NULL WHERE id = $1 RETURNING id',
+      [userId]
+    );
+  }
+  
   return result.rows[0];
 }
 

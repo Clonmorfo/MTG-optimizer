@@ -176,12 +176,12 @@ async function login(req, res) {
       userAgent: req.headers['user-agent']
     });
 
-    // Enviar refresh token en cookie HttpOnly
-    res.cookie('refreshToken', result.refreshToken, {
+    // Configurar cookie segura con refresh token
+     res.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'strict',
-      maxAge: rememberMe ? 90 * 24 * 60 * 60 * 1000 : 30 * 24 * 60 * 60 * 1000
+      ...(rememberMe && { maxAge: 45 * 24 * 60 * 60 * 1000 }) // 👈 CLAVE
     });
 
     // Responder con acceso token (refresh token va en cookie)

@@ -82,15 +82,6 @@ async function loginUser(credentials) {
     );
   }
 
-  // Verificar si la cuenta está activa (solo 0 y 1 son válidas)
-  if (user.status !== 0 && user.status !== 1 && user.status !== 2) {
-    throw new AppError(
-      'Esta cuenta ha sido desactivada',
-      403,
-      'ACCOUNT_DISABLED'
-    );
-  }
-
   // Verificar la contraseña
   const isPasswordValid = await passwordUtils.verifyPassword(user.password, password);
   if (!isPasswordValid) {
@@ -99,11 +90,7 @@ async function loginUser(credentials) {
 
     // Lógica de bloqueo progresivo con duplicación de tiempo
     if (updated.failed_login >= 5 && updated.failed_login < 10) {
-      // Calcular minutos de bloqueo: 15, 30, 60, 120 (dobla cada vez)
-      // Para el quinto intento: 15 * 2^(5-5) = 15 * 2^0 = 15
-      // Para el sexto intento: 15 * 2^(6-5) = 15 * 2^1 = 30
-      // Para el séptimo intento: 15 * 2^(7-5) = 15 * 2^2 = 60
-      // Para el octavo intento: 15 * 2^(8-5) = 15 * 2^3 = 120
+      
       const lockMinutes = 15 * Math.pow(2, updated.failed_login - 5);
 
       await userRepository.lockAccount(user.id, lockMinutes, 2); // status 2 = temp ban
@@ -130,18 +117,18 @@ async function loginUser(credentials) {
   }
 
   // Login exitoso - resetear contador de intentos
-  await userRepository.resetFailedLogin(user.id);
+  await userRepository.resetFailedLogin(user.id,true);
 
   // Crear tokens JWT
   const accessToken = jwtAuth.generateToken(user.id, '15m');
-  const refreshToken = jwtAuth.generateToken(user.id, '7d');
+  const refreshToken = remember_me ? jwtAuth.generateToken(user.id, '45d') : jwtAuth.generateToken(user.id, '1d');
 
   // Hash del refresh token para guardar en BD
   const refreshTokenHash = await passwordUtils.hashPassword(refreshToken);
 
   // Calcular expiración de la sesión
   const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + 7);
+  expiresAt.setDate(expiresAt.getDate() + (remember_me ? 45 : 1));
 
   // Crear sesión en BD
   await userRepository.createSession(user.id, refreshTokenHash, ip, userAgent, expiresAt);
