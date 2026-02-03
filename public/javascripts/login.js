@@ -49,14 +49,11 @@
         const data = await response.json();
 
         if (response.ok) {
-          // Guardar access token para peticiones al dashboard
-            if (data.accessToken) {
-              localStorage.setItem('accessToken', data.accessToken);
-            }
+           
           successMsg.textContent = 'Sesión iniciada. Redirigiendo...';
           successMsg.style.display = 'block';
           setTimeout(() => {
-            window.location.href = '/dashboard.html';
+            window.location.href = '/auth/me';
           }, 1500);
         } else {
           errorMsg.textContent = data.error || 'Error al iniciar sesión';
