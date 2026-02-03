@@ -3,7 +3,7 @@
  * Capa de lógica de negocio - Cero dependencias HTTP
  */
 
-const userRepository = require('../repositories/usersRepository');
+const userRepository = require('../repositories/authServiceRepository');
 const passwordUtils = require('../utils/password');
 const sanitize = require('../utils/sanitize');
 const jwtAuth = require('../auth/jwt');
@@ -31,6 +31,16 @@ async function registerUser(userData) {
   const passwordHash = await passwordUtils.hashPassword(password);
 
   // Crear usuario en BD
+  try {
+    await userRepository.create(username, email, passwordHash, false);
+  } catch (error) {
+    console.error('Error creando usuario:', error);
+    throw new AppError(
+      'Error al crear el usuario',
+      500,
+      'USER_CREATION_FAILED'
+    );
+  }
   await userRepository.create(username, email, passwordHash, false);
 
   return {
@@ -120,16 +130,20 @@ async function loginUser(credentials) {
   await userRepository.resetFailedLogin(user.id,true);
 
   // Crear tokens JWT
-  const accessToken = jwtAuth.generateToken(user.id, '15m');
-  const refreshToken = remember_me ? jwtAuth.generateToken(user.id, '45d') : jwtAuth.generateToken(user.id, '1d');
+  const accessToken = jwtAuth.generateAccessToken(user.id,email);
+  const refreshToken = jwtAuth.generateRefreshToken(user.id);
 
   // Hash del refresh token para guardar en BD
   const refreshTokenHash = await passwordUtils.hashPassword(refreshToken);
 
   // Calcular expiración de la sesión
   const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + (remember_me ? 45 : 1));
 
+  if (remember_me) {
+    expiresAt.setDate(expiresAt.getDate() + 45); // persistente
+  } else {
+    expiresAt.setHours(expiresAt.getHours() + 12); // corta
+  }
   // Crear sesión en BD
   await userRepository.createSession(user.id, refreshTokenHash, ip, userAgent, expiresAt);
 
@@ -140,7 +154,7 @@ async function loginUser(credentials) {
     success: true,
     userId: user.id,
     accessToken,
-    refreshToken
+    refreshTokenHash
   };
 }
 
@@ -172,5 +186,5 @@ module.exports = {
   registerUser,
   loginUser,
   checkUsernameAvailability,
-  checkEmailAvailability
+  checkEmailAvailability,
 };
